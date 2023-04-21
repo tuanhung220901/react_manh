@@ -2,15 +2,26 @@ import { useProduct } from "queries/productQueries";
 import { useEffect, useState } from "react";
 import { ProductResponse } from "../../apis/products/product.model";
 import { Link } from "react-router-dom";
+import ReactPaginate from 'react-paginate';
 
 export const Product = () => {
-  const [listProduct, setListProduct] = useState<ProductResponse[]>([]);
   const { mutate: getProduct } = useProduct();
+  const [listProduct, setListProduct] = useState<ProductResponse[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
+  console.log(listProduct.length);
+  
+  const pageCount = Math.ceil(listProduct.length / pageSize); // tính số trang cần phân trang
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber.selected + 1);
+  };
+
+  const displayedProducts = listProduct.slice((currentPage - 1) * pageSize, currentPage * pageSize); // lấy các sản phẩm tương ứng với trang hiện tại
 //   const abc = [
 //     {
 //         "_id": "64400e237178e194b25d6e76",
 //         "category_id": "64400d377178e194b25d6e73",
-//         "product_name": "Sữa rửa mặt Hadalabo dưỡng",
+//         "product_name": "Sữa rửa mặt Hadalabo dưỡng trắng",
 //         "amount": 1000,
 //         "price": 74000,
 //         "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/hadalaboxanh.png?alt=media&token=164c8e07-1c30-41fc-8cce-33f55fcfae1f",
@@ -91,7 +102,133 @@ export const Product = () => {
 //         "createdAt": "2023-04-19T16:42:18.793Z",
 //         "updatedAt": "2023-04-19T16:42:18.793Z",
 //         "__v": 0
-//     }
+//     },{
+//       "_id": "644019eaaced66a13f577baf",
+//       "category_id": "64400d377178e194b25d6e73",
+//       "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//       "amount": 500,
+//       "price": 80000,
+//       "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//       "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//       "ngaysx": "2023-01-25T00:00:00.000Z",
+//       "hsd": "2025-08-09T00:00:00.000Z",
+//       "nhasx": "Oxy",
+//       "createdAt": "2023-04-19T16:42:18.793Z",
+//       "updatedAt": "2023-04-19T16:42:18.793Z",
+//       "__v": 0
+//   },{
+//     "_id": "644019eaaced66a13f577baf",
+//     "category_id": "64400d377178e194b25d6e73",
+//     "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//     "amount": 500,
+//     "price": 80000,
+//     "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//     "ngaysx": "2023-01-25T00:00:00.000Z",
+//     "hsd": "2025-08-09T00:00:00.000Z",
+//     "nhasx": "Oxy",
+//     "createdAt": "2023-04-19T16:42:18.793Z",
+//     "updatedAt": "2023-04-19T16:42:18.793Z",
+//     "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// },{
+//   "_id": "644019eaaced66a13f577baf",
+//   "category_id": "64400d377178e194b25d6e73",
+//   "product_name": "Sữa rửa mặt Oxy Deep Wash",
+//   "amount": 500,
+//   "price": 80000,
+//   "description": " sữa rửa mặt Oxy Deep Wash có thành phần chính được làm từ nguyên liệu than tre với cấu trúc tổ ong siêu xốp giúp hấp thu dầu thừa và bụi bẩn sâu tận lỗ chân lông, giúp nam giới kiểm soát nhờn, dầu trong thời gian dài suốt cả ngày. Than vỏ trấu với công nghệ Triporous độc quyền tối ưu hóa khả năng làm sạch nhờ cơ chế hấp thu đa dạng các tạp chất. Ngoài ra, sản phẩm còn được bổ sung thêm vitamin B3 cùng chiết xuát tảo biển giúp tăng cường độ ẩm cho làn da nam giới tút da lại sáng mịn hơn.",
+//   "image": "https://firebasestorage.googleapis.com/v0/b/btl-ws-n7.appspot.com/o/oxyden.jpg?alt=media&token=405454d7-9395-4741-b687-514b97755d5b",
+//   "ngaysx": "2023-01-25T00:00:00.000Z",
+//   "hsd": "2025-08-09T00:00:00.000Z",
+//   "nhasx": "Oxy",
+//   "createdAt": "2023-04-19T16:42:18.793Z",
+//   "updatedAt": "2023-04-19T16:42:18.793Z",
+//   "__v": 0
+// }
 // ]
   useEffect(() => {
     getProduct(
@@ -134,14 +271,14 @@ export const Product = () => {
         </div>
     </div>
       <div className="flex flex-wrap">
-        {listProduct.map((item, index) => (
+        {displayedProducts.map((item, index) => (
           <div className="relative m-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md" key={index}>
             <Link to={item._id}>
               <img className="h-60 rounded-t-lg object-cover" src={item.image} alt="product image" />
             </Link>
           <div className="mt-4 px-5 pb-5">
             <a href="#">
-              <h5 className="text-xl font-semibold tracking-tight text-slate-900">{item.product_name}</h5>
+              <h5 className="text-xl font-semibold tracking-tight text-slate-900 hitespace-nowrap whitespace-nowrap text-ellipsis overflow-hidden">{item.product_name}</h5>
             </a>
             <div className="mt-2.5 mb-5 flex items-center">
               <span className="mr-2 rounded bg-[#fde047] px-2.5 py-0.5 text-xs font-semibold">5.0</span>
@@ -177,6 +314,21 @@ export const Product = () => {
         ))}
       </div>
     </div>
+    <ReactPaginate
+        pageCount={pageCount}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+        previousLabel={'Previous'}
+        nextLabel={'Next'}
+        pageClassName={'bg-blue-500 rounded-full py-2 px-4 mx-2 mb-10'}
+        activeClassName={'bg-[gray] text-white'}
+        containerClassName={'flex justify-center mt-4'}
+        previousClassName={'rounded-full py-2 px-4 mx-2'}
+        nextClassName={'rounded-full py-2 px-4 mx-2'}
+      />
     </div>
   );
 };
