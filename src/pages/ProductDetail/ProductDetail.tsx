@@ -150,8 +150,34 @@ const ProductDetail = () => {
             <span className="mt-1 block text-center text-xs">$40/mo</span>
           </label>
         </div>
+        <div className="mt-3 flex select-none flex-wrap items-center gap-1">
+        <div className="w-[30px] h-[30px]">
+        <div className="flex-1 h-full">
+          <div className="flex items-center justify-center flex-1 h-full p-2 border border-gray-400 rounded-full">
+            <div className="relative">
+             <img src = "https://e7.pngegg.com/pngimages/255/159/png-clipart-plus-and-minus-signs-subtraction-meno-plus-minus-sign-mathematics-rectangle-black-thumbnail.png"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-[80px] bg-[#000] text-center py-2 rounded text-[#fff] mx-3 font-medium text-[16px]">10
+        </div>
+        <div className="w-[30px] h-[30px]">
+        <div className="flex-1 h-full">
+          <div className="flex items-center justify-center flex-1 h-full p-2 border border-gray-400 rounded-full">
+            <div className="relative">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+          <div>
+          </div>
 
-        <div className="mt-10 flex  items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
+        <div className="mt-4 flex  items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
           <div className="flex items-end">
             <h1 className="text-3xl font-bold">{product?.price+ 'đ'}</h1>
             {/* <span className="text-base">/month</span> */}
